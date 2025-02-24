@@ -16,16 +16,32 @@
     <div v-if="imageSrc">
       <h3>Captured Image:</h3>
       <img :src="imageSrc" class="captured-image" />
+
+      <!-- Only show the "Generate" button if an image has been captured -->
+      <button @click="handleGenerateImage" class="generate-button">Generate</button>
     </div>
+
+    <!-- Display Generated Image -->
+    <div v-if="generatedImage">
+      <h3>Generated Image:</h3>
+      <img :src="generatedImage" class="generated-image" />
+    </div>
+
+    <!-- Status Message -->
+    <p v-if="status">{{ status }}</p>
   </div>
 </template>
 
 <script>
+import { generateImage } from "@/services/comfyuiService";
+
 export default {
   data() {
     return {
       cameraActive: false,
-      imageSrc: null
+      imageSrc: null, // ✅ This ensures the "Generate" button is hidden until an image is taken
+      generatedImage: null,
+      status: "",
     };
   },
   methods: {
@@ -51,7 +67,11 @@ export default {
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       // Convert canvas to image URL
-      this.imageSrc = canvas.toDataURL("image/png");
+      this.imageSrc = canvas.toDataURL("image/png"); // ✅ Triggers "Generate" button visibility
+    },
+    async handleGenerateImage() {
+      this.generatedImage = null; // Reset previous generated image
+      this.generatedImage = await generateImage(this.imageSrc, (msg) => (this.status = msg));
     }
   }
 };
@@ -73,11 +93,17 @@ button {
   margin: 5px;
   padding: 10px;
   font-size: 16px;
+  cursor: pointer;
 }
-.captured-image {
+.captured-image, .generated-image {
   margin-top: 10px;
   width: 100%;
   max-width: 400px;
   border: 2px solid #333;
+}
+.generate-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
 }
 </style>
