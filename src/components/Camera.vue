@@ -8,7 +8,7 @@
 
     <!-- Buttons -->
     <div class="controls">
-      <button @click="startCamera">打开相机</button>
+      <button @click="startCamera">打开相机a</button>
       <button @click="captureImage" :disabled="!cameraActive">拍照</button>
     </div>
 

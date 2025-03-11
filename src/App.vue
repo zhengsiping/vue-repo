@@ -1,16 +1,16 @@
+<!-- filepath: /Users/sipzheng/codebase/web-project/vue-project/src/App.vue -->
 <template>
-  <div>
-    <h1>Camera App</h1>
-    <Camera />
+  <div id="app">
+    <router-view />
   </div>
 </template>
 
 <script>
-import Camera from './components/Camera.vue';
-
 export default {
-  components: {
-    Camera
-  }
+  name: 'App'
 };
 </script>
+
+<style>
+/* Add your styles here */
+</style>
