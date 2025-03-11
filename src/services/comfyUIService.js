@@ -9,7 +9,7 @@ export async function generateImage(imageSrc, updateStatus) {
   }
 
   try {
-    updateStatus("📤 Uploading image to ComfyUI...");
+    updateStatus("📤 正在上传图片至后台...");
 
     // Convert Base64 image to Blob
     const blob = await fetch(imageSrc).then(res => res.blob());
@@ -21,7 +21,7 @@ export async function generateImage(imageSrc, updateStatus) {
     const uploadResponse = await axios.post(`${COMFYUI_URL}/upload/image`, formData);
     const uploadedImageName = uploadResponse.data.name;
 
-    updateStatus("✅ Image uploaded! Processing in ComfyUI...");
+    updateStatus("✅ 图片上传成功。等待后台处理图片...");
 
     // 2️⃣ Send request to generate AI image based on uploaded image
     const workflowData = {
@@ -61,7 +61,7 @@ export async function generateImage(imageSrc, updateStatus) {
     });
 
     const promptId = workflowResponse.data.prompt_id;
-    updateStatus(`🎉 Workflow submitted! Prompt ID: ${promptId}`);
+    updateStatus(`🎉 成功上传图片处理 Prompt ID: ${promptId}`);
 
     // 5️⃣ Poll the queue to check status
     return await pollForResult(promptId, updateStatus);
@@ -76,7 +76,7 @@ export async function generateImage(imageSrc, updateStatus) {
 
 // 6️⃣ Function to Poll for Generated Image
 async function pollForResult(promptId, updateStatus) {
-    updateStatus("⏳ Waiting for image generation...");
+    updateStatus("⏳ 等待后台处理图片中...");
     let attempts = 0;
   
     return new Promise((resolve, reject) => {
@@ -91,7 +91,7 @@ async function pollForResult(promptId, updateStatus) {
             // Check if processing is complete
             if (result.status.completed) {
               clearInterval(interval);
-              updateStatus("✅ Image generation complete!");
+              updateStatus("✅ 图片生成成功!");
   
               // Extract the generated image filename
               const imageData = result.outputs["4"].images[0]; // Node "4" saves the image

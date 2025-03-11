@@ -8,23 +8,24 @@
 
     <!-- Buttons -->
     <div class="controls">
-      <button @click="startCamera">Start Camera</button>
-      <button @click="captureImage" :disabled="!cameraActive">Take Picture</button>
+      <button @click="startCamera">打开相机</button>
+      <button @click="captureImage" :disabled="!cameraActive">拍照</button>
     </div>
 
-    <!-- Display Captured Image -->
-    <div v-if="imageSrc">
-      <h3>Captured Image:</h3>
-      <img :src="imageSrc" class="captured-image" />
+    <!-- Display Captured & Generated Images in the Same Row -->
+    <div class="image-container" v-if="imageSrc || generatedImage">
+      <!-- Captured Image -->
+      <div class="image-box" v-if="imageSrc">
+        <h3>获取的照片</h3>
+        <img :src="imageSrc" class="captured-image" />
+        <button @click="handleGenerateImage" class="generate-button">生成图片</button>
+      </div>
 
-      <!-- Only show the "Generate" button if an image has been captured -->
-      <button @click="handleGenerateImage" class="generate-button">Generate</button>
-    </div>
-
-    <!-- Display Generated Image -->
-    <div v-if="generatedImage">
-      <h3>Generated Image:</h3>
-      <img :src="generatedImage" class="generated-image" />
+      <!-- Generated Image -->
+      <div class="image-box" v-if="generatedImage">
+        <h3>生成的图片</h3>
+        <img :src="generatedImage" class="generated-image" />
+      </div>
     </div>
 
     <!-- Status Message -->
@@ -39,7 +40,7 @@ export default {
   data() {
     return {
       cameraActive: false,
-      imageSrc: null, // ✅ This ensures the "Generate" button is hidden until an image is taken
+      imageSrc: null,
       generatedImage: null,
       status: "",
     };
@@ -67,7 +68,11 @@ export default {
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       // Convert canvas to image URL
-      this.imageSrc = canvas.toDataURL("image/png"); // ✅ Triggers "Generate" button visibility
+      this.imageSrc = canvas.toDataURL("image/png");
+
+      // ✅ Clear the generated image & status message when taking a new picture
+      this.generatedImage = null;
+      this.status = "";
     },
     async handleGenerateImage() {
       this.generatedImage = null; // Reset previous generated image
@@ -95,15 +100,45 @@ button {
   font-size: 16px;
   cursor: pointer;
 }
-.captured-image, .generated-image {
-  margin-top: 10px;
-  width: 100%;
-  max-width: 400px;
-  border: 2px solid #333;
+
+/* Layout for images: captured & generated in the same row */
+.image-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
 }
+
+/* Individual image boxes */
+.image-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 250px;
+}
+
+/* Captured & Generated Images */
+.captured-image, .generated-image {
+  width: 100%;
+  max-width: 250px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+/* Style for the Generate button */
 .generate-button {
   background-color: #28a745;
   color: white;
   border: none;
+  padding: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+.generate-button:hover {
+  background-color: #218838;
 }
 </style>
