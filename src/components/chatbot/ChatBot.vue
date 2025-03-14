@@ -15,7 +15,7 @@
 </template>
 
 <script>
-const API_BASE_URL = "http://118.178.91.36";
+const API_BASE_URL = "https://47.97.117.147";
 export default {
   data() {
     return {
