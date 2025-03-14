@@ -15,6 +15,7 @@
 </template>
 
 <script>
+const API_BASE_URL = "http://118.178.91.36";
 export default {
   data() {
     return {
@@ -36,7 +37,7 @@ export default {
       };
 
       try {
-        const response = await fetch('http://127.0.0.1:8000/query', {
+        const response = await fetch(`${API_BASE_URL}/api/query`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -81,7 +82,7 @@ export default {
       formData.append('file', audioBlob, 'your_audio.wav');
 
       try {
-        const response = await fetch('http://127.0.0.1:8000/upload-wav', {
+        const response = await fetch(`${API_BASE_URL}/api/upload-wav`, {
           method: 'POST',
           body: formData
         });

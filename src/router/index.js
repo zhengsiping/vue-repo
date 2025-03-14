@@ -5,14 +5,14 @@ import ChatBot from '../components/chatbot/ChatBot.vue';
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/chat-bot',
     name: 'ChatBot',
     component: ChatBot
-  }
+  },
+  // {
+  //   path: '/chat-bot',
+  //   name: 'ChatBot',
+  //   component: ChatBot
+  // }
 ];
 
 const router = createRouter({
