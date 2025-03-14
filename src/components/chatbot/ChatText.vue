@@ -1,14 +1,15 @@
 <template>
     <div class="chat-container">
-      <h2>Text Chat</h2>
+        <h2>雁荡山聊天助手</h2>
+        <h3>请问关于雁荡山的问题</h3>
       <div class="output">
         <p>{{ outputText }}</p>
       </div>
-      <input v-model="inputText" type="text" placeholder="Type your message here..." />
+      <input v-model="inputText" type="text" placeholder="输入问题..." />
       <button @click="sendMessage" :disabled="isSending">
-        {{ isSending ? 'Sending...' : 'Send' }}
+        {{ isSending ? '发送中...' : '发送' }}
       </button>
-      <button @click="switchToAudioChat">Switch to Audio Chat</button>
+      <button @click="switchToAudioChat">跳转至语音助手</button>
     </div>
   </template>
   

@@ -1,6 +1,7 @@
 <template>
     <div class="chat-container">
-      <h2>Audio Chat</h2>
+      <h2>雁荡山语音助手</h2>
+      <h3>请问关于雁荡山的问题</h3>
       <button 
         @click="handleRecording"
         :style="{ backgroundColor: isRecording ? 'red' : '', cursor: isSending ? 'not-allowed' : 'pointer' }"
@@ -9,7 +10,7 @@
         {{ buttonText }}
       </button>
       <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-      <button @click="switchToTextChat">Switch to Text Chat</button>
+      <button @click="switchToTextChat">跳转至聊天助手</button>
     </div>
   </template>
   
@@ -23,7 +24,7 @@
         isSending: false,
         mediaRecorder: null,
         audioChunks: [],
-        buttonText: "Record",
+        buttonText: "录音",
         errorMessage: "",
         startTime: null,
         playingAudio: null,
@@ -53,20 +54,20 @@
   
             if (duration < 1) {
               this.errorMessage = "录音太短";
-              this.buttonText = "Record";
+              this.buttonText = "录音";
               return;
             }
   
             const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
             this.isSending = true;
-            this.buttonText = "Sending...";
+            this.buttonText = "发送录音中...";
             await this.sendAudio(audioBlob);
           };
   
           this.startTime = Date.now();
           this.mediaRecorder.start();
           this.isRecording = true;
-          this.buttonText = "Recording, click to stop";
+          this.buttonText = "录音中, 点击停止";
         } else {
           this.mediaRecorder.stop();
           this.isRecording = false;
@@ -92,7 +93,7 @@
           console.error('Error uploading audio:', error);
         } finally {
           this.isSending = false;
-          this.buttonText = "Record";
+          this.buttonText = "录音";
         }
       },
   
